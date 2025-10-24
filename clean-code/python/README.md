@@ -200,9 +200,152 @@ students = {'kasozi', 'vincent', 'bob'}
 
 ## Meaningful-Distinctions
 
+---
+
+When naming variables, functions, or classes, make sure that the names are distinct enough to avoid confusion. Names that are too similar can lead to bugs and make code harder to understand.
+
+**Bad** 😠
+
+```python
+def get_user_data(user_id: int):
+    user = get_user(user_id)
+    users = get_all_users()
+    return user
+```
+
+The problem here is that `user` and `users` are too similar and can cause confusion. What's the difference between them? It's not immediately clear.
+
+**Good** 😊
+
+```python
+def get_user_data(user_id: int):
+    current_user = get_user(user_id)
+    all_users = get_all_users()
+    return current_user
+```
+
+Now it's clear that `current_user` refers to a single user, while `all_users` refers to a collection of users.
+
+**Another example:**
+
+**Bad** 😠
+
+```python
+class Account:
+    def __init__(self, balance: float):
+        self.balance = balance
+        self.balance_history = []
+
+def transfer_money(from_account: Account, to_account: Account, amount: float):
+    from_account.balance -= amount
+    to_account.balance += amount
+```
+
+**Good** 😊
+
+```python
+class Account:
+    def __init__(self, balance: float):
+        self.current_balance = balance
+        self.transaction_history = []
+
+def transfer_money(source_account: Account, destination_account: Account, amount: float):
+    source_account.current_balance -= amount
+    destination_account.current_balance += amount
+```
+
+The key principles for meaningful distinctions:
+
+1. **Use descriptive prefixes/suffixes**: `current_balance` vs `balance_history`
+2. **Be specific about context**: `source_account` vs `destination_account`
+3. **Avoid single-letter differences**: `user` vs `users` is confusing
+4. **Make differences obvious**: The distinction should be immediately clear
+
 **[⬆ back to top](#table-of-contents)**
 
 ## Avoid-Disinformation
+
+---
+
+Avoid names that provide false information or mislead the reader about what the code actually does. Names should accurately represent what they contain or what they do.
+
+**Bad** 😠
+
+```python
+# This is misleading - it's not actually a list!
+student_list = {'alice', 'bob', 'charlie'}  # This is a set, not a list
+
+# This suggests it's a single user, but it's actually a collection
+user = ['alice', 'bob', 'charlie']
+
+# This suggests it's a boolean, but it's actually a string
+is_active = "yes"  # Should be True/False or "active"/"inactive"
+```
+
+**Good** 😊
+
+```python
+# Clear about the data structure
+students = {'alice', 'bob', 'charlie'}  # Set of students
+student_set = {'alice', 'bob', 'charlie'}  # Explicit about being a set
+
+# Clear about the collection
+users = ['alice', 'bob', 'charlie']  # List of users
+user_list = ['alice', 'bob', 'charlie']  # Explicit about being a list
+
+# Clear about the data type
+is_active = True  # Boolean
+status = "active"  # String status
+```
+
+**More examples of misleading names:**
+
+**Bad** 😠
+
+```python
+# Misleading - suggests it's a single account
+account = [account1, account2, account3]
+
+# Misleading - suggests it's a function, but it's a variable
+def calculate_total():
+    return total
+
+# Misleading - suggests it's a constant, but it's mutable
+MAX_RETRIES = 3
+MAX_RETRIES = 5  # This is allowed but misleading
+
+# Misleading - suggests it's a list, but it's a dictionary
+user_list = {'id': 1, 'name': 'Alice'}
+```
+
+**Good** 😊
+
+```python
+# Clear about the collection
+accounts = [account1, account2, account3]
+account_list = [account1, account2, account3]
+
+# Clear about the variable
+total = calculate_total()
+
+# Use proper constant naming
+MAX_RETRIES = 3  # Use UPPER_CASE for constants
+# Or use a class constant
+class Config:
+    MAX_RETRIES = 3
+
+# Clear about the data structure
+user_dict = {'id': 1, 'name': 'Alice'}
+user_data = {'id': 1, 'name': 'Alice'}
+```
+
+**Common misleading patterns to avoid:**
+
+1. **Data structure mismatches**: `list` for sets, `dict` for lists
+2. **Type mismatches**: `is_` prefix for non-booleans
+3. **Collection vs single item**: `user` for multiple users
+4. **Mutable constants**: `MAX_RETRIES` that can be changed
+5. **Function names for variables**: `calculate_total` as a variable name
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -277,37 +420,933 @@ for i in range(0,number_of_tasks):
 
 ### Don't-be-cute
 
+---
+
+Avoid using cute, funny, or clever names in your code. While they might seem amusing at the time, they make code harder to understand and maintain. Code should be professional and clear.
+
+**Bad** 😠
+
+```python
+# Cute but unclear names
+def whack_a_mole(bug_list):
+    for bug in bug_list:
+        if bug.is_critical:
+            squish_bug(bug)
+
+def holy_grail_search(target):
+    return find_needle_in_haystack(target)
+
+# Funny but confusing
+def boogie_woogie(data):
+    return shuffle_and_dance(data)
+
+# Clever but unclear
+def xyzzy():
+    return perform_magic()
+```
+
+**Good** 😊
+
+```python
+# Clear and professional names
+def fix_critical_bugs(bug_list):
+    for bug in bug_list:
+        if bug.is_critical:
+            resolve_bug(bug)
+
+def search_for_target(target):
+    return find_item(target)
+
+# Clear and descriptive
+def randomize_data(data):
+    return shuffle_data(data)
+
+# Clear and meaningful
+def initialize_system():
+    return setup_application()
+```
+
+**More examples of cute names to avoid:**
+
+**Bad** 😠
+
+```python
+# Cute but unprofessional
+def oops_i_did_it_again():
+    return retry_operation()
+
+def abracadabra(data):
+    return transform_data(data)
+
+def hocus_pocus():
+    return perform_initialization()
+
+# Funny but unclear
+def boom_shakalaka():
+    return execute_explosive_operation()
+
+def yippee_ki_yay():
+    return celebrate_success()
+```
+
+**Good** 😊
+
+```python
+# Professional and clear
+def retry_failed_operation():
+    return retry_operation()
+
+def transform_input_data(data):
+    return transform_data(data)
+
+def initialize_application():
+    return perform_initialization()
+
+# Clear and descriptive
+def execute_critical_operation():
+    return execute_explosive_operation()
+
+def log_success():
+    return celebrate_success()
+```
+
+**Why avoid cute names:**
+
+1. **Professionalism**: Code is read by many people over time
+2. **Clarity**: Cute names don't explain what the code does
+3. **Maintenance**: Future developers (including yourself) need to understand the code
+4. **Searchability**: Cute names are hard to search for in documentation
+5. **International teams**: Cute names might not translate well across cultures
+
+**Exceptions:**
+- **Test data**: Using funny names for test data is sometimes acceptable
+- **Temporary code**: For throwaway scripts, cute names might be okay
+- **Personal projects**: For learning or personal use, cute names are less problematic
+
+**Remember**: Code is written once but read many times. Make it easy for future readers to understand what your code does.
+
 **[⬆ back to top](#table-of-contents)**
 
 ### Avoid-Encodings
+
+---
+
+Avoid encoding type information or other metadata into variable names. Modern IDEs and type hints provide this information more clearly. Encoded names are harder to read and maintain.
+
+**Bad** 😠
+
+```python
+# Hungarian notation - encoding type in name
+strName = "Alice"
+intAge = 25
+boolIsActive = True
+lstUsers = ['alice', 'bob']
+dictConfig = {'host': 'localhost'}
+
+# Member prefixes
+class User:
+    def __init__(self):
+        self._strName = "Alice"  # Private string
+        self.m_intAge = 25       # Member integer
+        self.p_boolIsActive = True  # Public boolean
+```
+
+**Good** 😊
+
+```python
+# Clear names without encoding
+name = "Alice"
+age = 25
+is_active = True
+users = ['alice', 'bob']
+config = {'host': 'localhost'}
+
+# Clean class without prefixes
+class User:
+    def __init__(self):
+        self.name = "Alice"
+        self.age = 25
+        self.is_active = True
+```
+
+**Why avoid encodings:**
+
+1. **Type hints are better**: Modern Python supports type hints
+2. **IDE support**: IDEs show type information automatically
+3. **Readability**: Encoded names are harder to read
+4. **Maintenance**: When types change, you have to update names
+5. **Modern practice**: Current Python style guides discourage encodings
 
 **[⬆ back to top](#table-of-contents)**
 
 #### Hungarian-Notation
 
+Hungarian notation is a naming convention where the type of a variable is encoded as a prefix in its name. This practice is generally discouraged in modern Python development.
+
+**Bad** 😠
+
+```python
+# Hungarian notation examples
+strUserName = "Alice"
+intUserAge = 25
+boolIsUserActive = True
+lstUserList = ['alice', 'bob', 'charlie']
+dictUserConfig = {'theme': 'dark', 'language': 'en'}
+arrUserScores = [85, 92, 78]
+```
+
+**Good** 😊
+
+```python
+# Clean names with type hints
+user_name: str = "Alice"
+user_age: int = 25
+is_user_active: bool = True
+user_list: list[str] = ['alice', 'bob', 'charlie']
+user_config: dict[str, str] = {'theme': 'dark', 'language': 'en'}
+user_scores: list[int] = [85, 92, 78]
+```
+
+**Why avoid Hungarian notation:**
+
+1. **Type hints are better**: Python's type hints are more explicit and IDE-friendly
+2. **Maintenance burden**: When types change, you must update variable names
+3. **Readability**: Prefixes make names longer and harder to read
+4. **Modern IDEs**: IDEs show type information automatically
+5. **Python philosophy**: Python emphasizes readability and simplicity
+
 #### Member-Prefixes
+
+Avoid using prefixes to indicate member variables or access levels. Python's naming conventions already handle this through underscore prefixes.
+
+**Bad** 😠
+
+```python
+class User:
+    def __init__(self):
+        self.m_strName = "Alice"      # Member string
+        self.m_intAge = 25            # Member integer
+        self.p_boolIsActive = True    # Public boolean
+        self._m_privateData = "secret"  # Redundant prefixes
+```
+
+**Good** 😊
+
+```python
+class User:
+    def __init__(self):
+        self.name = "Alice"           # Public attribute
+        self.age = 25                 # Public attribute
+        self.is_active = True         # Public attribute
+        self._private_data = "secret" # Private attribute (single underscore)
+```
+
+**Python naming conventions:**
+
+- **No prefix**: Public attributes (`name`, `age`)
+- **Single underscore**: Protected/internal use (`_internal_method`)
+- **Double underscore**: Name mangling for privacy (`__private_attr`)
+- **Trailing underscore**: Avoid keyword conflicts (`class_`, `type_`)
+
+**Why avoid member prefixes:**
+
+1. **Python conventions**: Python has established naming patterns
+2. **IDE support**: IDEs understand Python naming conventions
+3. **Readability**: Prefixes add visual noise
+4. **Consistency**: Follow Python's PEP 8 style guide
 
 #### Interfaces-&-Implementations
 
+Avoid encoding interface vs implementation information in names. Use clear, descriptive names that focus on what the class does, not how it's implemented.
+
+**Bad** 😠
+
+```python
+# Encoding interface vs implementation
+class IUserService:  # Interface prefix
+    def get_user(self, user_id: int):
+        pass
+
+class UserServiceImpl:  # Implementation suffix
+    def get_user(self, user_id: int):
+        return self.user_repository.find_by_id(user_id)
+
+class UserServiceMock:  # Mock suffix
+    def get_user(self, user_id: int):
+        return User(id=user_id, name="Test User")
+```
+
+**Good** 😊
+
+```python
+# Clear, descriptive names
+class UserService:  # Base service
+    def get_user(self, user_id: int):
+        pass
+
+class DatabaseUserService:  # Specific implementation
+    def get_user(self, user_id: int):
+        return self.user_repository.find_by_id(user_id)
+
+class InMemoryUserService:  # Clear about storage type
+    def get_user(self, user_id: int):
+        return self.users.get(user_id)
+```
+
+**Better approach with abstract base classes:**
+
+```python
+from abc import ABC, abstractmethod
+
+class UserService(ABC):
+    @abstractmethod
+    def get_user(self, user_id: int):
+        pass
+
+class DatabaseUserService(UserService):
+    def get_user(self, user_id: int):
+        return self.user_repository.find_by_id(user_id)
+
+class InMemoryUserService(UserService):
+    def get_user(self, user_id: int):
+        return self.users.get(user_id)
+```
+
+**Why avoid interface/implementation encoding:**
+
+1. **Python philosophy**: Python emphasizes duck typing
+2. **Clarity**: Names should describe purpose, not implementation details
+3. **Flexibility**: Implementation can change without renaming
+4. **Modern patterns**: Use abstract base classes or protocols instead
+
 ### Gratuitous-Context
 
-**[⬆ back to top](#table-of-contents)**
+---
+
+Avoid adding unnecessary context to names when the context is already clear from the surrounding code. Don't repeat information that's already obvious.
+
+**Bad** 😠
+
+```python
+class UserManager:
+    def __init__(self):
+        self.user_manager_name = "UserManager"
+        self.user_manager_id = 1
+        self.user_manager_config = {}
+
+    def get_user_manager_user(self, user_id):
+        return self.user_manager_database.find_user(user_id)
+
+    def create_user_manager_user(self, user_data):
+        return self.user_manager_database.create_user(user_data)
+```
+
+**Good** 😊
+
+```python
+class UserManager:
+    def __init__(self):
+        self.name = "UserManager"
+        self.id = 1
+        self.config = {}
+
+    def get_user(self, user_id):
+        return self.database.find_user(user_id)
+
+    def create_user(self, user_data):
+        return self.database.create_user(user_data)
+```
+
+**More examples:**
+
+**Bad** 😠
+
+```python
+# Redundant context
+class ShoppingCart:
+    def __init__(self):
+        self.shopping_cart_items = []
+        self.shopping_cart_total = 0
+
+    def add_shopping_cart_item(self, item):
+        self.shopping_cart_items.append(item)
+        self.shopping_cart_total += item.price
+
+# Unnecessary prefixes
+def process_user_data_user_information(user_data):
+    return validate_user_data(user_data)
+
+def calculate_order_total_order_amount(order):
+    return sum(item.price for item in order.items)
+```
+
+**Good** 😊
+
+```python
+# Clean context
+class ShoppingCart:
+    def __init__(self):
+        self.items = []
+        self.total = 0
+
+    def add_item(self, item):
+        self.items.append(item)
+        self.total += item.price
+
+# Clear without redundancy
+def process_user_data(user_data):
+    return validate_user_data(user_data)
+
+def calculate_total(order):
+    return sum(item.price for item in order.items)
+```
+
+**When context is helpful:**
+
+```python
+# Context is helpful when there's ambiguity
+class User:
+    def __init__(self):
+        self.email = "user@example.com"
+        self.work_email = "user@company.com"  # Context clarifies which email
+        self.personal_phone = "123-456-7890"
+        self.work_phone = "098-765-4321"     # Context clarifies which phone
+```
+
+**Guidelines:**
+
+1. **Remove obvious context**: Don't repeat class/module names in method names
+2. **Keep necessary context**: Use context when there's potential confusion
+3. **Consider scope**: Context is more important in larger scopes
+4. **Be consistent**: If you add context to one similar item, add it to all
 
 ### Avoid-Mental-Mapping
 
-**[⬆ back to top](#table-of-contents)**
+---
+
+Avoid names that require mental translation or mapping to understand what they represent. Names should be self-explanatory and not require the reader to decode them.
+
+**Bad** 😠
+
+```python
+# Requires mental mapping
+def process_data(d):
+    for i in d:
+        if i > 0:
+            print(f"Positive: {i}")
+
+# Single letter variables
+def calculate_total(items):
+    t = 0
+    for i in items:
+        t += i.price
+    return t
+
+# Cryptic abbreviations
+def calc_usr_bal(usr_id):
+    return get_usr_bal(usr_id)
+
+# Mathematical notation
+def f(x, y):
+    return x * y + 2 * x + 1
+```
+
+**Good** 😊
+
+```python
+# Self-explanatory names
+def process_numbers(numbers):
+    for number in numbers:
+        if number > 0:
+            print(f"Positive: {number}")
+
+# Clear variable names
+def calculate_total(items):
+    total = 0
+    for item in items:
+        total += item.price
+    return total
+
+# Full words
+def calculate_user_balance(user_id):
+    return get_user_balance(user_id)
+
+# Descriptive function name
+def calculate_quadratic_value(x, y):
+    return x * y + 2 * x + 1
+```
+
+**More examples of mental mapping to avoid:**
+
+**Bad** 😠
+
+```python
+# Abbreviations that require decoding
+def proc_req(req):
+    return validate_req(req)
+
+def calc_tax(amt, rate):
+    return amt * rate
+
+# Single letters in loops
+for i in range(len(users)):
+    for j in range(len(users[i].orders)):
+        print(users[i].orders[j].total)
+
+# Cryptic variable names
+def process_data(data):
+    res = []
+    for d in data:
+        if d['status'] == 'active':
+            res.append(d['id'])
+    return res
+```
+
+**Good** 😊
+
+```python
+# Clear, full words
+def process_request(request):
+    return validate_request(request)
+
+def calculate_tax(amount, tax_rate):
+    return amount * tax_rate
+
+# Descriptive loop variables
+for user_index in range(len(users)):
+    for order_index in range(len(users[user_index].orders)):
+        print(users[user_index].orders[order_index].total)
+
+# Clear variable names
+def process_data(data):
+    active_user_ids = []
+    for user_data in data:
+        if user_data['status'] == 'active':
+            active_user_ids.append(user_data['id'])
+    return active_user_ids
+```
+
+**When single letters might be acceptable:**
+
+```python
+# Mathematical functions where x, y, z are conventional
+def distance(x1, y1, x2, y2):
+    return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+
+# Very short, local scope
+def process_items(items):
+    for item in items:
+        if item.is_valid:
+            return item
+    return None
+```
+
+**Guidelines for avoiding mental mapping:**
+
+1. **Use full words**: `user_id` instead of `uid`
+2. **Be descriptive**: `calculate_total` instead of `calc_tot`
+3. **Avoid abbreviations**: `process_request` instead of `proc_req`
+4. **Use meaningful loop variables**: `user_index` instead of `i`
+5. **Consider context**: What's obvious to you might not be to others
 
 ## **Functions**
 
 ### **Small**
 
+---
+
+Functions should be small. The smaller they are, the easier they are to understand, test, and maintain. A good rule of thumb is that a function should fit on one screen.
+
+**Bad** 😠
+
+```python
+def process_user_data(user_data):
+    # This function is too long and does too many things
+    if not user_data:
+        return None
+
+    # Validate user data
+    if 'name' not in user_data or not user_data['name']:
+        raise ValueError("Name is required")
+    if 'email' not in user_data or not user_data['email']:
+        raise ValueError("Email is required")
+    if '@' not in user_data['email']:
+        raise ValueError("Invalid email format")
+
+    # Process user data
+    user_data['name'] = user_data['name'].strip().title()
+    user_data['email'] = user_data['email'].strip().lower()
+
+    # Save to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO users (name, email) VALUES (?, ?)",
+                   (user_data['name'], user_data['email']))
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+    # Send welcome email
+    email_service = EmailService()
+    email_service.send_welcome_email(user_data['email'])
+
+    # Log the action
+    logger.info(f"User {user_data['name']} created successfully")
+
+    return user_data
+```
+
+**Good** 😊
+
+```python
+def process_user_data(user_data):
+    """Process and save user data."""
+    validate_user_data(user_data)
+    cleaned_data = clean_user_data(user_data)
+    save_user_to_database(cleaned_data)
+    send_welcome_email(cleaned_data['email'])
+    log_user_creation(cleaned_data['name'])
+    return cleaned_data
+
+def validate_user_data(user_data):
+    """Validate that user data contains required fields."""
+    if not user_data:
+        raise ValueError("User data is required")
+
+    if 'name' not in user_data or not user_data['name']:
+        raise ValueError("Name is required")
+
+    if 'email' not in user_data or not user_data['email']:
+        raise ValueError("Email is required")
+
+    if '@' not in user_data['email']:
+        raise ValueError("Invalid email format")
+
+def clean_user_data(user_data):
+    """Clean and normalize user data."""
+    return {
+        'name': user_data['name'].strip().title(),
+        'email': user_data['email'].strip().lower()
+    }
+
+def save_user_to_database(user_data):
+    """Save user data to the database."""
+    connection = get_database_connection()
+    try:
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO users (name, email) VALUES (?, ?)",
+                       (user_data['name'], user_data['email']))
+        connection.commit()
+    finally:
+        cursor.close()
+        connection.close()
+
+def send_welcome_email(email):
+    """Send welcome email to new user."""
+    email_service = EmailService()
+    email_service.send_welcome_email(email)
+
+def log_user_creation(name):
+    """Log user creation event."""
+    logger.info(f"User {name} created successfully")
+```
+
+**Benefits of small functions:**
+
+1. **Easier to understand**: Each function has a single, clear purpose
+2. **Easier to test**: You can test each function independently
+3. **Easier to debug**: Problems are isolated to specific functions
+4. **Easier to reuse**: Small functions can be reused in different contexts
+5. **Easier to modify**: Changes are localized to specific functions
+
+**Guidelines for function size:**
+
+- **One screen**: Function should fit on one screen (20-30 lines)
+- **One responsibility**: Each function should do one thing
+- **One level of abstraction**: Don't mix high-level and low-level operations
+- **Readable**: Function should be easy to read from top to bottom
+
 **[⬆ back to top](#table-of-contents)**
 
 ### Do-One-Thing
 
+---
+
+Functions should do one thing and do it well. If you can't describe what a function does in one sentence without using "and", it's probably doing too much.
+
+**Bad** 😠
+
+```python
+def process_user_and_send_email(user_data):
+    """This function does two things: processes user and sends email."""
+    # Process user data
+    if 'name' not in user_data:
+        raise ValueError("Name required")
+    user_data['name'] = user_data['name'].strip().title()
+
+    # Save to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO users (name) VALUES (?)", (user_data['name'],))
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+    # Send email
+    email_service = EmailService()
+    email_service.send_welcome_email(user_data['email'])
+
+    return user_data
+```
+
+**Good** 😊
+
+```python
+def process_user(user_data):
+    """Process and save user data."""
+    validate_user_data(user_data)
+    cleaned_data = clean_user_data(user_data)
+    save_user_to_database(cleaned_data)
+    return cleaned_data
+
+def send_welcome_email(email):
+    """Send welcome email to user."""
+    email_service = EmailService()
+    email_service.send_welcome_email(email)
+
+# Usage
+def create_user(user_data):
+    """Create a new user."""
+    processed_user = process_user(user_data)
+    send_welcome_email(processed_user['email'])
+    return processed_user
+```
+
+**How to identify if a function does one thing:**
+
+1. **Can you describe it in one sentence?** If you need "and", it's doing multiple things
+2. **Can you extract another function?** If yes, the function is too complex
+3. **Does it have multiple levels of abstraction?** High-level and low-level operations mixed together
+4. **Can you name it with a single verb?** `process_user` vs `process_user_and_send_email`
+
+**More examples:**
+
+**Bad** 😠
+
+```python
+def calculate_total_and_display(items):
+    """Calculates total and displays it - does two things."""
+    total = sum(item.price for item in items)
+    print(f"Total: ${total}")
+    return total
+
+def validate_and_save_user(user_data):
+    """Validates and saves user - does two things."""
+    if not user_data.get('name'):
+        raise ValueError("Name required")
+    save_user(user_data)
+    return user_data
+```
+
+**Good** 😊
+
+```python
+def calculate_total(items):
+    """Calculate total price of items."""
+    return sum(item.price for item in items)
+
+def display_total(total):
+    """Display the total amount."""
+    print(f"Total: ${total}")
+
+def validate_user(user_data):
+    """Validate user data."""
+    if not user_data.get('name'):
+        raise ValueError("Name required")
+
+def save_user(user_data):
+    """Save user to database."""
+    # Save logic here
+    pass
+
+# Usage
+def process_order(items):
+    """Process an order."""
+    total = calculate_total(items)
+    display_total(total)
+    return total
+```
+
+**Benefits of single responsibility:**
+
+1. **Easier to test**: Test one behavior at a time
+2. **Easier to understand**: Clear, focused purpose
+3. **Easier to reuse**: Can be used in different contexts
+4. **Easier to modify**: Changes are isolated
+5. **Easier to debug**: Problems are localized
+
 **[⬆ back to top](#table-of-contents)**
 
 ### One-level-of-Abstraction
+
+---
+
+Functions should operate at a single level of abstraction. Don't mix high-level operations with low-level implementation details in the same function.
+
+**Bad** 😠
+
+```python
+def process_order(order):
+    """Mixes high-level and low-level operations."""
+    # High-level: validate order
+    if not order.items:
+        raise ValueError("Order must have items")
+
+    # Low-level: database connection details
+    connection = get_database_connection()
+    cursor = connection.cursor()
+    cursor.execute("BEGIN TRANSACTION")
+
+    # High-level: calculate total
+    total = sum(item.price for item in order.items)
+
+    # Low-level: SQL operations
+    cursor.execute("INSERT INTO orders (total) VALUES (?)", (total,))
+    order_id = cursor.lastrowid
+
+    # High-level: process items
+    for item in order.items:
+        # Low-level: more SQL
+        cursor.execute("INSERT INTO order_items (order_id, item_id, price) VALUES (?, ?, ?)",
+                       (order_id, item.id, item.price))
+
+    # Low-level: transaction management
+    cursor.execute("COMMIT")
+    cursor.close()
+    connection.close()
+
+    return order_id
+```
+
+**Good** 😊
+
+```python
+def process_order(order):
+    """Process an order at high level."""
+    validate_order(order)
+    total = calculate_order_total(order)
+    order_id = save_order_to_database(order, total)
+    return order_id
+
+def validate_order(order):
+    """Validate order at high level."""
+    if not order.items:
+        raise ValueError("Order must have items")
+
+def calculate_order_total(order):
+    """Calculate total at high level."""
+    return sum(item.price for item in order.items)
+
+def save_order_to_database(order, total):
+    """Save order to database at high level."""
+    with get_database_connection() as connection:
+        with connection.cursor() as cursor:
+            return execute_order_transaction(cursor, order, total)
+
+def execute_order_transaction(cursor, order, total):
+    """Handle database transaction at low level."""
+    cursor.execute("BEGIN TRANSACTION")
+    try:
+        cursor.execute("INSERT INTO orders (total) VALUES (?)", (total,))
+        order_id = cursor.lastrowid
+
+        for item in order.items:
+            cursor.execute("INSERT INTO order_items (order_id, item_id, price) VALUES (?, ?, ?)",
+                           (order_id, item.id, item.price))
+
+        cursor.execute("COMMIT")
+        return order_id
+    except Exception:
+        cursor.execute("ROLLBACK")
+        raise
+```
+
+**Levels of abstraction:**
+
+1. **High-level**: Business logic, what the system does
+2. **Mid-level**: Service operations, how components interact
+3. **Low-level**: Implementation details, how things are done
+
+**Bad** 😠
+
+```python
+def send_notification(user, message):
+    """Mixes abstraction levels."""
+    # High-level: business logic
+    if user.is_active:
+        # Low-level: email implementation
+        import smtplib
+        from email.mime.text import MIMEText
+
+        msg = MIMEText(message)
+        msg['Subject'] = 'Notification'
+        msg['From'] = 'noreply@company.com'
+        msg['To'] = user.email
+
+        server = smtplib.SMTP('smtp.company.com', 587)
+        server.starttls()
+        server.login('username', 'password')
+        server.send_message(msg)
+        server.quit()
+```
+
+**Good** 😊
+
+```python
+def send_notification(user, message):
+    """Send notification at high level."""
+    if user.is_active:
+        email_service = EmailService()
+        email_service.send_email(user.email, message)
+
+class EmailService:
+    """Handle email operations at mid level."""
+    def send_email(self, to_address, message):
+        email_data = self.create_email_data(to_address, message)
+        self.deliver_email(email_data)
+
+    def create_email_data(self, to_address, message):
+        return {
+            'to': to_address,
+            'subject': 'Notification',
+            'body': message,
+            'from': 'noreply@company.com'
+        }
+
+    def deliver_email(self, email_data):
+        """Deliver email at low level."""
+        import smtplib
+        from email.mime.text import MIMEText
+
+        msg = MIMEText(email_data['body'])
+        msg['Subject'] = email_data['subject']
+        msg['From'] = email_data['from']
+        msg['To'] = email_data['to']
+
+        server = smtplib.SMTP('smtp.company.com', 587)
+        server.starttls()
+        server.login('username', 'password')
+        server.send_message(msg)
+        server.quit()
+```
+
+**Benefits of single abstraction level:**
+
+1. **Easier to read**: Function focuses on one level of detail
+2. **Easier to test**: Test business logic separately from implementation
+3. **Easier to modify**: Change implementation without affecting business logic
+4. **Easier to understand**: Clear separation of concerns
+5. **Easier to reuse**: High-level functions can be reused with different implementations
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -518,9 +1557,271 @@ After a year, Joe's client comes back and asks Joe to add a Current account. Gue
 
 ### Use-Descriptive-Names
 
+---
+
+Function names should clearly describe what the function does. A good function name should make the code read like well-written prose.
+
+**Bad** 😠
+
+```python
+def process(data):
+    """What does this process?"""
+    return data.strip().lower()
+
+def calc(x, y):
+    """Calculate what?"""
+    return x * y + 2 * x + 1
+
+def get_info(user):
+    """Get what info?"""
+    return f"{user.name} - {user.email}"
+
+def do_stuff(items):
+    """Do what stuff?"""
+    total = 0
+    for item in items:
+        total += item.price
+    return total
+```
+
+**Good** 😊
+
+```python
+def clean_user_input(data):
+    """Clean and normalize user input."""
+    return data.strip().lower()
+
+def calculate_quadratic_value(x, y):
+    """Calculate quadratic value for given x and y."""
+    return x * y + 2 * x + 1
+
+def format_user_summary(user):
+    """Format user information for display."""
+    return f"{user.name} - {user.email}"
+
+def calculate_order_total(items):
+    """Calculate total price of all items in order."""
+    total = 0
+    for item in items:
+        total += item.price
+    return total
+```
+
+**More examples of descriptive names:**
+
+**Bad** 😠
+
+```python
+def handle(data):
+    """Handle what?"""
+    if data['type'] == 'user':
+        return process_user(data)
+    elif data['type'] == 'order':
+        return process_order(data)
+
+def check(x):
+    """Check what?"""
+    return x > 0 and x < 100
+
+def update(obj):
+    """Update what?"""
+    obj.last_modified = datetime.now()
+    return obj
+```
+
+**Good** 😊
+
+```python
+def process_business_data(data):
+    """Process business data based on type."""
+    if data['type'] == 'user':
+        return process_user_data(data)
+    elif data['type'] == 'order':
+        return process_order_data(data)
+
+def is_valid_percentage(value):
+    """Check if value is a valid percentage."""
+    return value > 0 and value < 100
+
+def update_last_modified_timestamp(obj):
+    """Update the last modified timestamp of an object."""
+    obj.last_modified = datetime.now()
+    return obj
+```
+
+**Guidelines for descriptive function names:**
+
+1. **Use verbs**: Function names should start with verbs (`calculate`, `process`, `validate`)
+2. **Be specific**: `calculate_total` is better than `calculate`
+3. **Include context**: `calculate_order_total` is better than `calculate_total`
+4. **Avoid abbreviations**: `calculate` not `calc`
+5. **Use domain language**: Use terms from your business domain
+
+**Examples of good naming patterns:**
+
+```python
+# Validation functions
+def is_valid_email(email):
+def validate_user_data(user_data):
+def check_permissions(user, resource):
+
+# Calculation functions
+def calculate_tax(amount, rate):
+def compute_discount(price, discount_percent):
+def determine_shipping_cost(weight, distance):
+
+# Data processing functions
+def format_currency(amount):
+def normalize_phone_number(phone):
+def parse_user_input(input_string):
+
+# Action functions
+def save_user_to_database(user):
+def send_notification_email(user, message):
+def generate_report(data):
+```
+
+**Benefits of descriptive names:**
+
+1. **Self-documenting code**: Names explain what the code does
+2. **Easier to understand**: No need to read implementation
+3. **Easier to maintain**: Clear purpose makes changes easier
+4. **Easier to test**: Clear expectations for what to test
+5. **Easier to debug**: Clear understanding of what went wrong
+
 **[⬆ back to top](#table-of-contents)**
 
 ### Function-Arguments
+
+---
+
+Functions should have as few arguments as possible. The more arguments a function has, the harder it is to understand, test, and use. Aim for functions with 0-2 arguments.
+
+**Bad** 😠
+
+```python
+def create_user(first_name, last_name, email, phone, address, city, state, zip_code, country, date_of_birth, gender, occupation, company, department, manager, salary, start_date, end_date, status, notes):
+    """Too many arguments - hard to use and understand."""
+    return {
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': email,
+        # ... many more fields
+    }
+
+def calculate_tax(amount, rate, state_rate, federal_rate, local_rate, surcharge, discount, rebate, exemption, deduction):
+    """Too many arguments - confusing."""
+    base_tax = amount * rate
+    state_tax = amount * state_rate
+    # ... complex calculation
+    return total_tax
+```
+
+**Good** 😊
+
+```python
+def create_user(user_data):
+    """Create user with structured data."""
+    return {
+        'first_name': user_data.first_name,
+        'last_name': user_data.last_name,
+        'email': user_data.email,
+        # ... other fields
+    }
+
+def calculate_tax(amount, tax_config):
+    """Calculate tax with configuration object."""
+    base_tax = amount * tax_config.base_rate
+    state_tax = amount * tax_config.state_rate
+    # ... calculation using config
+    return total_tax
+
+# Usage
+user_data = UserData(
+    first_name="John",
+    last_name="Doe",
+    email="john@example.com"
+)
+user = create_user(user_data)
+
+tax_config = TaxConfig(
+    base_rate=0.1,
+    state_rate=0.05,
+    federal_rate=0.15
+)
+tax = calculate_tax(1000, tax_config)
+```
+
+**Strategies for reducing arguments:**
+
+1. **Use objects/classes**: Group related data into objects
+2. **Use data structures**: Lists, dictionaries, or named tuples
+3. **Use builder pattern**: For complex object creation
+4. **Split functions**: Break large functions into smaller ones
+5. **Use default values**: Provide sensible defaults
+
+**More examples:**
+
+**Bad** 😠
+
+```python
+def send_email(to, subject, body, from_address, cc, bcc, attachments, priority, delivery_time, retry_count, timeout):
+    """Too many arguments."""
+    # Email sending logic
+    pass
+
+def process_order(customer_id, product_id, quantity, price, discount, tax_rate, shipping_cost, payment_method, billing_address, shipping_address):
+    """Too many arguments."""
+    # Order processing logic
+    pass
+```
+
+**Good** 😊
+
+```python
+def send_email(email_request):
+    """Send email with request object."""
+    # Email sending logic using email_request object
+    pass
+
+def process_order(order):
+    """Process order object."""
+    # Order processing logic using order object
+    pass
+
+# Usage
+email_request = EmailRequest(
+    to="user@example.com",
+    subject="Welcome",
+    body="Welcome to our service",
+    from_address="noreply@company.com"
+)
+send_email(email_request)
+
+order = Order(
+    customer_id=123,
+    items=[OrderItem(product_id=456, quantity=2, price=29.99)],
+    payment_method="credit_card",
+    billing_address=Address(...),
+    shipping_address=Address(...)
+)
+process_order(order)
+```
+
+**When to use different argument counts:**
+
+- **0 arguments**: Pure functions, simple operations
+- **1 argument**: Transformations, validations, single operations
+- **2 arguments**: Binary operations, comparisons
+- **3+ arguments**: Consider using objects or splitting the function
+
+**Benefits of fewer arguments:**
+
+1. **Easier to use**: Less to remember when calling the function
+2. **Easier to test**: Fewer combinations to test
+3. **Easier to understand**: Clear purpose and usage
+4. **Easier to maintain**: Changes are localized
+5. **Less error-prone**: Fewer parameters to get wrong
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -689,6 +1990,173 @@ This function is plagued with more than one problem.
 ### Command-Query-Separation
 
 ---
+
+Functions should either do something (command) or answer something (query), but not both. This principle helps make code more predictable and easier to understand.
+
+**Bad** 😠
+
+```python
+def get_user_and_update_last_login(user_id):
+    """This function does both - queries and modifies."""
+    user = database.get_user(user_id)
+    user.last_login = datetime.now()
+    database.save_user(user)
+    return user
+
+def calculate_total_and_save(items):
+    """This function does both - calculates and saves."""
+    total = sum(item.price for item in items)
+    database.save_total(total)
+    return total
+
+def process_order_and_send_email(order):
+    """This function does both - processes and sends email."""
+    order.status = 'processed'
+    database.save_order(order)
+    email_service.send_confirmation(order.customer_email)
+    return order
+```
+
+**Good** 😊
+
+```python
+# Commands - do something, return void or status
+def update_user_last_login(user_id):
+    """Update user's last login time."""
+    user = database.get_user(user_id)
+    user.last_login = datetime.now()
+    database.save_user(user)
+
+def save_order_total(total):
+    """Save the calculated total."""
+    database.save_total(total)
+
+def process_order(order):
+    """Process an order."""
+    order.status = 'processed'
+    database.save_order(order)
+
+def send_order_confirmation(order):
+    """Send confirmation email for order."""
+    email_service.send_confirmation(order.customer_email)
+
+# Queries - answer something, don't modify state
+def get_user(user_id):
+    """Get user by ID."""
+    return database.get_user(user_id)
+
+def calculate_order_total(items):
+    """Calculate total price of items."""
+    return sum(item.price for item in items)
+
+def get_order_status(order_id):
+    """Get current status of order."""
+    order = database.get_order(order_id)
+    return order.status
+
+# Usage - separate commands and queries
+def handle_order_processing(order):
+    """Handle complete order processing."""
+    # Query first
+    current_status = get_order_status(order.id)
+
+    if current_status == 'pending':
+        # Commands
+        process_order(order)
+        send_order_confirmation(order)
+
+    # Query result
+    return get_order_status(order.id)
+```
+
+**More examples:**
+
+**Bad** 😠
+
+```python
+def validate_and_save_user(user_data):
+    """Does both validation and saving."""
+    if not user_data.get('email'):
+        raise ValueError("Email required")
+
+    user = User(user_data)
+    database.save_user(user)
+    return user
+
+def get_balance_and_deduct(account_id, amount):
+    """Gets balance and modifies it."""
+    account = database.get_account(account_id)
+    if account.balance >= amount:
+        account.balance -= amount
+        database.save_account(account)
+    return account.balance
+```
+
+**Good** 😊
+
+```python
+# Commands
+def save_user(user):
+    """Save user to database."""
+    database.save_user(user)
+
+def deduct_from_account(account_id, amount):
+    """Deduct amount from account."""
+    account = database.get_account(account_id)
+    if account.balance >= amount:
+        account.balance -= amount
+        database.save_account(account)
+
+# Queries
+def validate_user_data(user_data):
+    """Validate user data."""
+    if not user_data.get('email'):
+        raise ValueError("Email required")
+    return True
+
+def get_account_balance(account_id):
+    """Get current account balance."""
+    account = database.get_account(account_id)
+    return account.balance
+
+# Usage
+def create_user(user_data):
+    """Create a new user."""
+    validate_user_data(user_data)  # Query
+    user = User(user_data)
+    save_user(user)  # Command
+    return user
+
+def transfer_money(from_account, to_account, amount):
+    """Transfer money between accounts."""
+    # Queries
+    from_balance = get_account_balance(from_account)
+    to_balance = get_account_balance(to_account)
+
+    if from_balance >= amount:
+        # Commands
+        deduct_from_account(from_account, amount)
+        add_to_account(to_account, amount)
+        return True
+    return False
+```
+
+**Benefits of command-query separation:**
+
+1. **Predictable behavior**: Functions either change state or return data, not both
+2. **Easier to test**: Queries are easy to test, commands can be tested for side effects
+3. **Easier to debug**: Clear separation of what changes state vs what reads state
+4. **Easier to understand**: Function purpose is immediately clear
+5. **Safer to use**: No unexpected side effects when calling query functions
+
+**Guidelines:**
+
+- **Commands**: Functions that change state, return void or status
+- **Queries**: Functions that return data, don't modify state
+- **Avoid mixing**: Don't have functions that both query and command
+- **Use descriptive names**: Commands should be verbs, queries should be nouns or "get" functions
+
+**[⬆ back to top](#table-of-contents)**
 
 ### Don't Repeat Yourself (DRY)
 
